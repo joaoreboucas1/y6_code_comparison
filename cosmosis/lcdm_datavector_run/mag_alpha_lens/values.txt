@@ -1,0 +1,6 @@
+alpha_1 = 1.58
+alpha_2 = 1.38
+alpha_3 = 2.04
+alpha_4 = 2.21
+alpha_5 = 2.45
+alpha_6 = 2.42

@@ -1,0 +1,9 @@
+auto_only = True
+is_auto = True
+nbin = 6
+nbin_a = 6
+nbin_b = 6
+sample_a = 'lens'
+sample_b = 'lens'
+save_name = ''
+sep_name = 'ell'

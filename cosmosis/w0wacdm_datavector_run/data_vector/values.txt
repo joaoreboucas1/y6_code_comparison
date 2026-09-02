@@ -1,0 +1,5 @@
+2pt_chi2 = 876.0358482480809
+2pt_log_det = -13025.068856879187
+2pt_n = 510
+2pt_name = 'Value not saved in block in cosmosis 3.19 or below due to a bug.'
+2pt_norm = 6512.534428439593
