@@ -1,0 +1,191 @@
+timing: True
+debug: False
+stop_at_error: False
+
+likelihood:
+  des_y6.combo_3x2pt:
+    path: ./external_modules/data/des_y6
+    data_file: DESY6.dataset
+    print_datavector: True
+    print_datavector_file: "./projects/des_y6/EXAMPLE.modelvector"
+    accuracyboost: 1.0
+    integration_accuracy: 0
+    lmax: 50000 # lmax computed for real space correlation function
+    kmax_boltzmann: 5.0
+    # 1 EE2, 2 Halofit
+    non_linear_emul: 2
+    IA_model: 0   # NLA (0) or TATT (1)
+    IA_code: 0    # CFASTPT (0) or FASTPT (1) (only works if not NLA)
+    IA_redshift_evolution: 3
+    debug: false
+
+params:
+  # NOTE: using the default nuisance parameter priors in likelihood/params_source.yaml and likelihood/params_lens.yaml.
+  # These priors can be overriden in here
+  As_1e9:
+    prior:
+      min: 0.5
+      max: 5
+    ref:
+      dist: norm
+      loc: 2.1
+      scale: 0.2
+    proposal: 0.2
+    latex: 10^9 A_\mathrm{s}
+    drop: true
+    renames: A
+  ns:
+    prior:
+      min: 0.87
+      max: 1.07
+    ref:
+      dist: norm
+      loc: 0.96605
+      scale: 0.015
+    proposal: 0.015
+    latex: n_\mathrm{s}
+  H0:
+    prior:
+      min: 55
+      max: 91
+    ref:
+      dist: norm
+      loc: 67.32
+      scale: 3
+    proposal: 3
+    latex: H_0
+  omegab:
+    prior:
+      min: 0.03
+      max: 0.07
+    ref:
+      dist: norm
+      loc: 0.0495
+      scale: 0.004
+    proposal: 0.004
+    latex: \Omega_\mathrm{b}
+    drop: true
+  omegam:
+    prior:
+      min: 0.1
+      max: 0.9
+    ref:
+      dist: norm
+      loc: 0.316
+      scale: 0.015
+    proposal: 0.015
+    latex: \Omega_\mathrm{m}
+    drop: true
+  w:
+    prior:
+      min: -3
+      max: -0.01
+    ref:
+      dist: norm
+      loc: -0.99
+      scale: 0.05
+    proposal: 0.05
+    latex: w_{0,\mathrm{DE}}
+  w0pwa:
+    prior:
+      min: -5 
+      max: -0.01
+    ref:
+      dist: norm
+      loc: -0.99
+      scale: 0.05
+    proposal: 0.05
+    latex: w_{0,\mathrm{DE}}+w_{a,\mathrm{DE}}
+    drop: true
+  wa:
+    value: 'lambda w0pwa, w: w0pwa - w'
+    latex: w_{a,\mathrm{DE}}
+  mnu:
+    prior:
+      min: 0.06
+      max: 0.6
+    ref:
+      dist: norm
+      loc: 0.25
+      scale: 0.1
+    proposal: 0.05
+  tau:
+    value: 0.0697186
+    latex: \tau_\mathrm{reio}
+  # ---------------------------------------------------------------------------------------
+  # ------------------------------------- DERIVED PARAMETERS ------------------------------
+  # ---------------------------------------------------------------------------------------
+  # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa/As/ FROM DERIVED PARAMETERS
+  # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
+  # --------------------------------------------------------------------------------------- 
+  As:
+    value: 'lambda As_1e9: 1e-9 * As_1e9'
+    latex: A_\mathrm{s}
+  omegabh2:
+    value: 'lambda omegab, H0: omegab*(H0/100)**2'
+    latex: \Omega_\mathrm{b} h^2
+  omegach2:
+    value: 'lambda omegam, omegab, mnu, H0: (omegam-omegab)*(H0/100)**2-(mnu*(3.046/3)**0.75)/94.0708'
+    latex: \Omega_\mathrm{c} h^2
+  omegal:
+    latex: \Omega_\Lambda
+  omegamh2:
+    derived: 'lambda omegam, H0: omegam*(H0/100)**2'
+    latex: \Omega_\mathrm{m} h^2
+  sigma8:
+    latex: \sigma_8
+
+theory:
+  camb:
+    path: ./external_modules/code/CAMB
+    stop_at_error: False
+    use_renames: True
+    extra_args:
+      halofit_version: mead2020_feedback
+      HMCode_logT_AGN: 7.7
+      AccuracyBoost: 1.05
+      dark_energy_model: ppf
+      accurate_massive_neutrino_transfers: false
+      k_per_logint: 10
+      kmax: 5.0
+      nnu: 3.044
+      num_massive_neutrinos: 3
+
+sampler:
+  evaluate:
+    override:
+      H0: 67.0
+      omegam: 0.319
+      omegab: 0.049
+      As_1e9: 2.1
+      ns: 0.96
+      mnu: 0.06
+      w: -1
+      w0pwa: -1
+      DES_DZ_S1: 0
+      DES_DZ_S2: 0
+      DES_DZ_S3: 0
+      DES_DZ_S4: 0
+      DES_DZ_L1: 0
+      DES_DZ_L2: 0
+      DES_DZ_L3: 0
+      DES_DZ_L4: 0
+      DES_DZ_L5: 0
+      DES_DZ_L6: 0
+      DES_M1: -0.00339767
+      DES_M2: 0.0064552
+      DES_M3: 0.01593935
+      DES_M4: 0.00169811
+      DES_A1_1: 0.7692307692307692 # NOTE: check conventions of sign and z_piv, this value here is 1/(1 + zpiv) with zpiv = 1.3
+      DES_A1_2: -1.0
+      # DES_A2_1: 0.0
+      # DES_A2_2: 0.0
+      # DES_BTA_1: 0.0
+      DES_B1_1: 1.54
+      DES_B1_2: 1.81
+      DES_B1_3: 1.85
+      DES_B1_4: 1.76
+      DES_B1_5: 1.93
+      DES_B1_6: 1.90
+      
+output: ./projects/des_y6/chains/EXAMPLE_EVALUATE1
