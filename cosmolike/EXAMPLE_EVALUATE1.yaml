@@ -176,7 +176,7 @@ sampler:
       DES_M2: 0.0064552
       DES_M3: 0.01593935
       DES_M4: 0.00169811
-      DES_A1_1: 0.7692307692307692 # NOTE: check conventions of sign and z_piv, this value here is 1/(1 + zpiv) with zpiv = 1.3
+      DES_A1_1: 1.0
       DES_A1_2: -1.0
       # DES_A2_1: 0.0
       # DES_A2_2: 0.0
