@@ -1,0 +1,6 @@
+[output] Output to be read-from/written-into folder './projects/des_y6/chains', with prefix 'EXAMPLE_EVALUATE1'
+[output] Found existing info files with the requested output prefix: './projects/des_y6/chains/EXAMPLE_EVALUATE1'
+[output] Will delete previous products ('force' was requested).
+[parameterization] *WARNING* There are repeated parameter labels: {'\\Delta z_\\mathrm{l,LSST}^5': ['DES_DZ_L5', 'DES_DZ_L6'], 'b_\\mathrm{1-LSST}^5': ['DES_B1_5', 'DES_B1_6'], 'b_\\mathrm{B3NL-LSST}^1': ['DES_B3NL_1', 'DES_BK_1'], 'b_\\mathrm{B3NL-LSST}^2': ['DES_B3NL_2', 'DES_BK_2'], 'b_\\mathrm{B3NL-LSST}^3': ['DES_B3NL_3', 'DES_BK_3'], 'b_\\mathrm{B3NL-LSST}^4': ['DES_B3NL_4', 'DES_BK_4'], 'b_\\mathrm{B3NL-LSST}^5': ['DES_B3NL_5', 'DES_BK_5'], 'b_\\mathrm{B3NL-LSST}^6': ['DES_B3NL_6', 'DES_BK_6'], 'b_\\mathrm{B3NL-LSST}^7': ['DES_B3NL_7', 'DES_BK_7'], 'b_\\mathrm{B3NL-LSST}^8': ['DES_B3NL_8', 'DES_BK_8'], 'b_\\mathrm{B3NL-LSST}^9': ['DES_B3NL_9', 'DES_BK_9'], 'b_\\mathrm{B3NL-LSST}^{10}': ['DES_B3NL_10', 'DES_BK_10']}
+[camb] `camb` module loaded successfully from /Users/joao/cosmo/cocoa/Cocoa/external_modules/code/CAMB/camb
+[2026-09-18 15:47:00.037] [critical] IP::set_mask: inconsistent mask
