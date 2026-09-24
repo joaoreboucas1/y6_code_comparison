@@ -1,13 +1,13 @@
 timing: True
 debug: False
-stop_at_error: False
+stop_at_error: True
 
 likelihood:
   des_y6.combo_3x2pt:
     path: ./external_modules/data/des_y6
     data_file: DESY6.dataset
     print_datavector: True
-    print_datavector_file: "./projects/y6_code_comparison/cosmolike/LCDM.modelvector"
+    print_datavector_file: "./projects/y6_code_comparison/cocoa/LCDM.modelvector"
     accuracyboost: 1.0
     integration_accuracy: 0
     lmax: 50000 # lmax computed for real space correlation function
@@ -140,6 +140,43 @@ params:
   omegan:
     derived: 'lambda omegan2, H0: omegan2/((H0/100)**2)'
     latex: \Omega_\mathrm{\\nu}
+  # JVR NOTE: overriding magnification bias priors
+  DES_BMAG_1:
+    prior:
+      dist: norm
+      loc: 1.58
+      scale: 0.04
+    latex: b_\mathrm{BMAG-LSST}^1
+  DES_BMAG_2:
+    prior:
+      dist: norm
+      loc: 1.38
+      scale: 0.11
+    latex: b_\mathrm{BMAG-LSST}^2
+  DES_BMAG_3:
+    prior:
+      dist: norm
+      loc: 2.04
+      scale: 0.08
+    latex: b_\mathrm{BMAG-LSST}^3
+  DES_BMAG_4:
+    prior:
+      dist: norm
+      loc: 2.21
+      scale: 0.08
+    latex: b_\mathrm{BMAG-LSST}^4
+  DES_BMAG_5:
+    prior:
+      dist: norm
+      loc: 2.45
+      scale: 0.14
+    latex: b_\mathrm{BMAG-LSST}^5
+  DES_BMAG_6:
+    prior:
+      dist: norm
+      loc: 2.42
+      scale: 0.13
+    latex: b_\mathrm{BMAG-LSST}^6
 
 theory:
   camb:
@@ -195,5 +232,11 @@ sampler:
       DES_B1_4: 1.76
       DES_B1_5: 1.93
       DES_B1_6: 1.90
+      DES_BMAG_1: 1.58
+      DES_BMAG_2: 1.38
+      DES_BMAG_3: 2.04
+      DES_BMAG_4: 2.21
+      DES_BMAG_5: 2.45
+      DES_BMAG_6: 2.42
       
 output: ./projects/des_y6/chains/EXAMPLE_EVALUATE1

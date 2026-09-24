@@ -1,0 +1,65 @@
+[output] Output to be read-from/written-into folder './projects/des_y6/chains', with prefix 'EXAMPLE_EVALUATE1'
+[output] Found existing info files with the requested output prefix: './projects/des_y6/chains/EXAMPLE_EVALUATE1'
+[output] Will delete previous products ('force' was requested).
+[parameterization] *WARNING* There are repeated parameter labels: {'\\Delta z_\\mathrm{l,LSST}^5': ['DES_DZ_L5', 'DES_DZ_L6'], 'b_\\mathrm{1-LSST}^5': ['DES_B1_5', 'DES_B1_6'], 'b_\\mathrm{B3NL-LSST}^1': ['DES_B3NL_1', 'DES_BK_1'], 'b_\\mathrm{B3NL-LSST}^2': ['DES_B3NL_2', 'DES_BK_2'], 'b_\\mathrm{B3NL-LSST}^3': ['DES_B3NL_3', 'DES_BK_3'], 'b_\\mathrm{B3NL-LSST}^4': ['DES_B3NL_4', 'DES_BK_4'], 'b_\\mathrm{B3NL-LSST}^5': ['DES_B3NL_5', 'DES_BK_5'], 'b_\\mathrm{B3NL-LSST}^6': ['DES_B3NL_6', 'DES_BK_6'], 'b_\\mathrm{B3NL-LSST}^7': ['DES_B3NL_7', 'DES_BK_7'], 'b_\\mathrm{B3NL-LSST}^8': ['DES_B3NL_8', 'DES_BK_8'], 'b_\\mathrm{B3NL-LSST}^9': ['DES_B3NL_9', 'DES_BK_9'], 'b_\\mathrm{B3NL-LSST}^{10}': ['DES_B3NL_10', 'DES_BK_10']}
+[camb] `camb` module loaded successfully from /Users/joao/cosmo/cocoa/Cocoa/external_modules/code/CAMB/camb
+[des_y6.combo_3x2pt] use_baryon_pca = False
+[evaluate] Initialized!
+[evaluate] Looking for a reference point with non-zero prior.
+[prior] Reference values or pdfs for some parameters were not provided. Sampling from the prior instead for those parameters.
+[evaluate] Reference point:
+   As_1e9 = 2.1
+   ns = 0.96
+   H0 = 67
+   omegab = 0.049
+   omegam = 0.319
+   w = -1
+   w0pwa = -1
+   mnu = 0.06
+   DES_BMAG_1 = 1.58
+   DES_BMAG_2 = 1.38
+   DES_BMAG_3 = 2.04
+   DES_BMAG_4 = 2.21
+   DES_BMAG_5 = 2.45
+   DES_BMAG_6 = 2.42
+   DES_DZ_L1 = 0
+   DES_DZ_L2 = 0
+   DES_DZ_L3 = 0
+   DES_DZ_L4 = 0
+   DES_DZ_L5 = 0
+   DES_DZ_L6 = 0
+   DES_B1_1 = 1.54
+   DES_B1_2 = 1.81
+   DES_B1_3 = 1.85
+   DES_B1_4 = 1.76
+   DES_B1_5 = 1.93
+   DES_B1_6 = 1.9
+   DES_DZ_S1 = 0
+   DES_DZ_S2 = 0
+   DES_DZ_S3 = 0
+   DES_DZ_S4 = 0
+   DES_A1_1 = 1
+   DES_A1_2 = -1
+   DES_M1 = -0.00339767
+   DES_M2 = 0.0064552
+   DES_M3 = 0.0159394
+   DES_M4 = 0.00169811
+[evaluate] Evaluating prior and likelihoods...
+[evaluate] log-posterior  = -582.506
+[evaluate] log-prior      = 62.4317
+[evaluate]    logprior_0 = 62.4317
+[evaluate] log-likelihood = -644.938
+[evaluate]    chi2_des_y6.combo_3x2pt = 1289.88
+[evaluate] Derived params:
+[evaluate]    wa = 0.0000000000000000
+[evaluate]    As = 0.0000000021000000
+[evaluate]    omegabh2 = 0.0219961000000000
+[evaluate]    omegach2 = 0.1205581334293749
+[evaluate]    omegal = 0.6809442529423109
+[evaluate]    omegamh2 = 0.1431991000000000
+[evaluate]    sigma8 = 0.8154201273378130
+[evaluate]    omegan2 = 0.0006451616715433
+[evaluate]    omegan = 0.0014372057730971
+[des_y6.combo_3x2pt] Average evaluation time for des_y6.combo_3x2pt: 0.168528 s  (1 evaluations)
+[camb.transfers] Average evaluation time for camb.transfers: 1.38345 s  (1 evaluations)
+[camb] Average evaluation time for camb: 0.544111 s  (1 evaluations)
