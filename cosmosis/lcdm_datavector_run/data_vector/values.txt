@@ -1,4 +1,4 @@
-2pt_chi2 = 959.0281878254967
+2pt_chi2 = 941.8222268176439
 2pt_log_det = -13025.068856879187
 2pt_n = 510
 2pt_name = 'Value not saved in block in cosmosis 3.19 or below due to a bug.'
