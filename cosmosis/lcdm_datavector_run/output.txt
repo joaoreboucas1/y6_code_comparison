@@ -153,26 +153,26 @@ setting up template matrix for pm-marginalization with shape: (5, 510)
 **** WARNING: Parameter 'make_covariance' in the [2pt_like] section never used!
 
 Module timing:
-w0wa_check 0.015687
-consistency 0.014954
-bbn_consistency 0.015989
-camb 0.015363
-fast_pt 0.014218
-fits_nz 0.023425
-correlated_priors 0.015010
-photoz_uz_lens 0.016500
-photoz_uz_source 0.015089
-IA 0.014525
-pk_to_cl_gg 0.015723
-pk_to_cl 0.015691
-add_magnification 0.014753
-add_intrinsic 0.014821
-2pt_shear 0.260303
-2pt_gal 0.099007
-2pt_gal_shear 0.101911
-shear_m_bias 0.014803
-add_point_mass 0.054948
-2pt_like 0.128139
+w0wa_check 0.017152
+consistency 0.015105
+bbn_consistency 0.016174
+camb 0.015264
+fast_pt 0.013390
+fits_nz 0.023740
+correlated_priors 0.015073
+photoz_uz_lens 0.016857
+photoz_uz_source 0.014652
+IA 0.013796
+pk_to_cl_gg 0.013732
+pk_to_cl 0.014082
+add_magnification 0.013477
+add_intrinsic 0.013304
+2pt_shear 0.247522
+2pt_gal 0.097611
+2pt_gal_shear 0.099627
+shear_m_bias 0.013118
+add_point_mass 0.052658
+2pt_like 0.121647
 
 Parameter Priors
 ----------------
@@ -445,24 +445,24 @@ class: <CAMBdata>
  HasScalarTimeSources = False
  
 --------------
-camb took: 1.193 seconds
-fast_pt took: 0.426 seconds
+camb took: 1.201 seconds
+fast_pt took: 0.414 seconds
 fits_nz took: 0.000 seconds
-correlated_priors took: 0.001 seconds
+correlated_priors took: 0.000 seconds
 photoz_uz_lens took: 0.001 seconds
-photoz_uz_source took: 0.001 seconds
+photoz_uz_source took: 0.000 seconds
 IA took: 0.013 seconds
-pk_to_cl_gg took: 0.715 seconds
-pk_to_cl took: 1.891 seconds
+pk_to_cl_gg took: 0.721 seconds
+pk_to_cl took: 1.885 seconds
 add_magnification took: 0.005 seconds
 add_intrinsic took: 0.002 seconds
-2pt_shear took: 0.079 seconds
-2pt_gal took: 0.024 seconds
-2pt_gal_shear took: 0.091 seconds
+2pt_shear took: 0.076 seconds
+2pt_gal took: 0.022 seconds
+2pt_gal_shear took: 0.088 seconds
 shear_m_bias took: 0.002 seconds
-add_point_mass took: 0.016 seconds
-2pt_like took: 0.024 seconds
-Total pipeline time: 4.49 seconds
+add_point_mass took: 0.014 seconds
+2pt_like took: 0.022 seconds
+Total pipeline time: 4.47 seconds
 Prior      =  -16.817925336348356
 Likelihood =  6041.642158917176
 Posterior  =  6024.824233580827
