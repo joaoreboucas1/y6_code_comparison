@@ -7,7 +7,7 @@ likelihood:
     path: ./external_modules/data/des_y6
     data_file: DESY6.dataset
     print_datavector: True
-    print_datavector_file: "./projects/y6_code_comparison/cocoa/LCDM.modelvector"
+    print_datavector_file: "./projects/y6_code_comparison/cocoa/LCDM_no_prefactor_no_BMAG_no_BMAG_ell_prefactor.modelvector"
     accuracyboost: 1.0
     integration_accuracy: 0
     lmax: 50000 # lmax computed for real space correlation function
@@ -232,11 +232,11 @@ sampler:
       DES_B1_4: 1.76
       DES_B1_5: 1.93
       DES_B1_6: 1.90
-      DES_BMAG_1: 1.58
-      DES_BMAG_2: 1.38
-      DES_BMAG_3: 2.04
-      DES_BMAG_4: 2.21
-      DES_BMAG_5: 2.45
-      DES_BMAG_6: 2.42
+      DES_BMAG_1: 0 # Turning off BMAG for now # original = 1.16, alpha = 1.58
+      DES_BMAG_2: 0 # Turning off BMAG for now # original = 0.76, alpha = 1.38
+      DES_BMAG_3: 0 # Turning off BMAG for now # original = 2.08, alpha = 2.04
+      DES_BMAG_4: 0 # Turning off BMAG for now # original = 2.42, alpha = 2.21
+      DES_BMAG_5: 0 # Turning off BMAG for now # original = 2.90, alpha = 2.45
+      DES_BMAG_6: 0 # Turning off BMAG for now # original = 2.84, alpha = 2.42
       
 output: ./projects/des_y6/chains/EXAMPLE_EVALUATE1
