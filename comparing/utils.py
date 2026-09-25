@@ -1,4 +1,6 @@
+from itertools import combinations
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
@@ -14,16 +16,8 @@ MAX_ANGLE = 995.2679263837432
 
 COSMOSIS_DATA_PATH = "../cosmosis/lcdm_datavector_run/"
 
-handles_comparison_plots = [
-    Line2D([], [], marker="o", color="C0", markersize=20, label="Cocoa"),
-    Line2D([], [], marker="P", color="C1", markersize=20, label="Cosmosis"),
-    Line2D([], [], marker="^", color="C2", markersize=20, label="Cosmolike Lighthouse"),
-]
-handles_error_plots = [
-    Line2D([], [], marker="o", color="C3", markersize=20, label="A: Cocoa, B: Cosmosis"),
-    Line2D([], [], marker="P", color="C4", markersize=20, label="A: Cocoa, B: Cosmolike"),
-    Line2D([], [], marker="^", color="C5", markersize=20, label="A: Cosmolike, B: Cosmosis"),
-]
+colors_comparison_plots = mpl.colors.TABLEAU_COLORS
+colors_error_plots = mpl.colors.XKCD_COLORS
 
 def get_theta(theta_min, theta_max, num_theta):
     """
@@ -103,16 +97,19 @@ def load_cosmosis_data():
     _, gc_cosmosis = load_cosmosis_gc_data()
     return theta_cosmosis, shear_cosmosis, ggl_cosmosis, gc_cosmosis
 
-def plot_shear_datavectors(theta, shear_cosmosis, shear_cocoa, shear_cosmolike):
+def plot_shear_datavectors(theta, shear_dvs, labels):
     num_cols = NUM_SOURCE_BINS+1
 
-    xi_plus_cocoa  = shear_cocoa[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cocoa = shear_cocoa[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_plus_cosmosis  = shear_cosmosis[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_plus_cosmolike  = shear_cosmolike[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cosmolike = shear_cosmolike[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_plus_cosmosis  = shear_cosmosis[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cosmosis = shear_cosmosis[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    xi_pluses = [shear_dv[:NUM_SHEAR_BLOCKS*BLOCK_SIZE] for shear_dv in shear_dvs]
+    xi_minuses = [shear_dv[NUM_SHEAR_BLOCKS*BLOCK_SIZE:2*NUM_SHEAR_BLOCKS*BLOCK_SIZE] for shear_dv in shear_dvs]
+    
+    # xi_plus_cocoa  = shear_cocoa[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_minus_cocoa = shear_cocoa[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_plus_cosmosis  = shear_cosmosis[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_plus_cosmolike  = shear_cosmolike[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_minus_cosmolike = shear_cosmolike[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_plus_cosmosis  = shear_cosmosis[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
+    # xi_minus_cosmosis = shear_cosmosis[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
 
     fig, axes = plt.subplots(NUM_SOURCE_BINS, num_cols, figsize=(13, 13), sharex=True, sharey=True, constrained_layout=True)
     plus_idx = 0
@@ -126,20 +123,16 @@ def plot_shear_datavectors(theta, shear_cosmosis, shear_cocoa, shear_cosmolike):
                 j = col
                 start = plus_idx * BLOCK_SIZE
                 end = start + BLOCK_SIZE
-                ax.loglog(theta, xi_plus_cocoa[start:end], color='C0', marker='o', linestyle='-')
-                ax.loglog(theta, xi_plus_cosmosis[start:end], color='C1', marker='P', linestyle='-')
-                ax.loglog(theta, xi_plus_cosmolike[start:end], color='C2', marker='^', linestyle='-')
-                line_idx = plus_idx
+                for xi_plus, color in zip(xi_pluses, colors_comparison_plots):
+                    ax.loglog(theta, xi_plus[start:end], color=color, marker="o")
                 plus_idx += 1
                 label = r'$\xi_+$'
             else:
                 j = col - 1
                 start = minus_idx * BLOCK_SIZE
                 end = start + BLOCK_SIZE
-                ax.loglog(theta, xi_minus_cocoa[start:end], color='C0', marker='o', linestyle='-')
-                ax.loglog(theta, xi_minus_cosmosis[start:end], color='C1', marker='P', linestyle='-')
-                ax.loglog(theta, xi_minus_cosmolike[start:end], color='C2', marker='^', linestyle='-')
-                line_idx = NUM_SHEAR_BLOCKS + minus_idx
+                for xi_minus, color in zip(xi_minuses, colors_comparison_plots):
+                    ax.loglog(theta, xi_minus[start:end], color=color, marker="o")
                 minus_idx += 1
                 label = r'$\xi_-$'
 
@@ -150,25 +143,25 @@ def plot_shear_datavectors(theta, shear_cosmosis, shear_cocoa, shear_cosmolike):
 
             ax.set_title(f'{label} bins {i+1},{j+1}', fontsize=12)
             ax.set_xlim([2, 255])
+            ax.set_ylim([1e-7, 2e-4])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 
-    fig.legend(handles=handles_comparison_plots, bbox_to_anchor=(0.9, 1.07), fontsize=20, ncol=3)
+    handles = [
+        Line2D([], [], color=color, marker="o", label=label) for color, label in zip(colors_comparison_plots, labels)
+    ]
+    fig.legend(handles=handles, bbox_to_anchor=(0.9, 1.07), fontsize=20, ncol=3)
 
     fig.suptitle('DES-Y6 Simulated Shear', fontsize=24)
     plt.savefig("comparison_shear.pdf", bbox_inches="tight")
     plt.show()
 
-def plot_shear_relative_errors(theta, shear_cosmosis, shear_cocoa, shear_cosmolike):
+def plot_shear_relative_errors(theta, shear_dvs, labels, save_fig_filename="errors_shear.pdf"):
     num_cols = NUM_SOURCE_BINS+1
     NUM_SHEAR_BLOCKS = NUM_SOURCE_BINS * (NUM_SOURCE_BINS + 1) // 2
 
-    xi_plus_cocoa  = shear_cocoa[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cocoa = shear_cocoa[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_plus_cosmolike  = shear_cosmolike[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cosmolike = shear_cosmolike[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_plus_cosmosis  = shear_cosmosis[:NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-    xi_minus_cosmosis = shear_cosmosis[NUM_SHEAR_BLOCKS * BLOCK_SIZE:2 * NUM_SHEAR_BLOCKS * BLOCK_SIZE]
-
+    xi_pluses = [shear_dv[:NUM_SHEAR_BLOCKS*BLOCK_SIZE] for shear_dv in shear_dvs]
+    xi_minuses = [shear_dv[NUM_SHEAR_BLOCKS*BLOCK_SIZE:2*NUM_SHEAR_BLOCKS*BLOCK_SIZE] for shear_dv in shear_dvs]
+    
     fig, axes = plt.subplots(NUM_SOURCE_BINS, num_cols, figsize=(13, 13), sharex=True, sharey=True, constrained_layout=True)
     plus_idx = 0
     minus_idx = 0
@@ -176,29 +169,27 @@ def plot_shear_relative_errors(theta, shear_cosmosis, shear_cocoa, shear_cosmoli
     for i in range(NUM_SOURCE_BINS):
         for col in range(num_cols):
             ax = axes[i, col]
-
+            # JVR NOTE: this weird next line calculates all possible pairs between the provided shear_dvs
+            # JVR NOTE 2: this needs to be calculated at every iteration since the iterator gets exhausted
+            comparison_pairs = combinations(range(len(shear_dvs)), 2)
             if col <= i:
                 j = col
                 start = plus_idx * BLOCK_SIZE
                 end = start + BLOCK_SIZE
-                rel_error_cocoa_cosmosis     = (xi_plus_cocoa[start:end] - xi_plus_cosmosis[start:end])/xi_plus_cosmosis[start:end]
-                rel_error_cocoa_cosmolike    = (xi_plus_cocoa[start:end] - xi_plus_cosmolike[start:end])/xi_plus_cosmolike[start:end]
-                rel_error_cosmolike_cosmosis = (xi_plus_cosmolike[start:end] - xi_plus_cosmosis[start:end])/xi_plus_cosmosis[start:end]
-                ax.semilogx(theta, rel_error_cocoa_cosmosis, color='C3', marker='o', linestyle='-')
-                ax.semilogx(theta, rel_error_cocoa_cosmolike, color='C4', marker='P', linestyle='-')
-                ax.semilogx(theta, rel_error_cosmolike_cosmosis, color='C5', marker='^', linestyle='-')
+                ax.axhline(color="black", ls="--")
+                for (a, b), color in zip(comparison_pairs, colors_error_plots):
+                    rel_error = (xi_pluses[a][start:end] - xi_pluses[b][start:end])/xi_pluses[b][start:end]
+                    ax.semilogx(theta, rel_error, color=color, marker='o')
                 plus_idx += 1
                 label = r'$\xi_+$'
             else:
                 j = col - 1
                 start = minus_idx * BLOCK_SIZE
                 end = start + BLOCK_SIZE
-                rel_error_cocoa_cosmosis     = (xi_minus_cocoa[start:end] - xi_minus_cosmosis[start:end])/xi_minus_cosmosis[start:end]
-                rel_error_cocoa_cosmolike    = (xi_minus_cocoa[start:end] - xi_minus_cosmolike[start:end])/xi_minus_cosmolike[start:end]
-                rel_error_cosmolike_cosmosis = (xi_minus_cosmolike[start:end] - xi_minus_cosmosis[start:end])/xi_minus_cosmosis[start:end]
-                ax.semilogx(theta, rel_error_cocoa_cosmosis, color='C3', marker='o', linestyle='-')
-                ax.semilogx(theta, rel_error_cocoa_cosmolike, color='C4', marker='P', linestyle='-')
-                ax.semilogx(theta, rel_error_cosmolike_cosmosis, color='C5', marker='^', linestyle='-')
+                ax.axhline(color="black", ls="--")
+                for (a, b), color in zip(comparison_pairs, colors_error_plots):
+                    rel_error = (xi_minuses[a][start:end] - xi_minuses[b][start:end])/xi_minuses[b][start:end]
+                    ax.semilogx(theta, rel_error, color=color, marker='o')
                 minus_idx += 1
                 label = r'$\xi_-$'
 
@@ -212,13 +203,14 @@ def plot_shear_relative_errors(theta, shear_cosmosis, shear_cocoa, shear_cosmoli
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 
-    fig.legend(handles=handles_error_plots, bbox_to_anchor=(1, 1.07), fontsize=20, ncol=3)
+    handles = [Line2D([], [], label=f"A: {labels[a]}, B: {labels[b]}", color=color, marker="o") for (a, b), color in zip(combinations(range(len(shear_dvs)), 2), colors_error_plots)]
+    fig.legend(handles=handles, bbox_to_anchor=(1, 0), fontsize=20, ncol=1)
 
-    fig.suptitle('DES-Y6 Simulated Data Vectors: Relative Errors between Cocoa and Cosmosis', fontsize=24)
-    plt.savefig("errors_shear.pdf", bbox_inches="tight")
+    fig.suptitle('DES-Y6 Simulated Data Vectors: Relative Errors in Shear', fontsize=24)
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_ggl_datavectors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
+def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="comparison_ggl.pdf"):
     num_cols = NUM_LENS_BINS
     num_rows = NUM_SOURCE_BINS
 
@@ -229,9 +221,9 @@ def plot_ggl_datavectors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
             ax = axes[row, col]
             start = (row*NUM_SOURCE_BINS + col) * BLOCK_SIZE
             end = start + BLOCK_SIZE
-            ax.loglog(theta, ggl_cocoa[start:end], color='C0', marker='o', linestyle='-')
-            ax.loglog(theta, ggl_cosmosis[start:end], color='C1', marker='P', linestyle='-')
-            ax.loglog(theta, ggl_cosmolike[start:end], color='C2', marker='^', linestyle='-')
+            for ggl_dv, color in zip(ggl_dvs, colors_comparison_plots):
+                ax.loglog(theta, ggl_dv[start:end], color=color, marker='o')
+            
             label = r'$\gamma_t$'
 
             if row == num_rows - 1:
@@ -243,13 +235,16 @@ def plot_ggl_datavectors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 
-    fig.legend(handles=handles_comparison_plots, bbox_to_anchor=(0.9, 1.1), fontsize=20, ncol=3)
+    handles = [
+        Line2D([], [], color=color, marker="o", label=label) for color, label in zip(colors_comparison_plots, labels)
+    ]
+    fig.legend(handles=handles, bbox_to_anchor=(0.9, 1.1), fontsize=20, ncol=3)
 
     fig.suptitle('DES-Y6 Simulated GGL', fontsize=20, )
-    plt.savefig("comparison_ggl.pdf", bbox_inches="tight")
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_ggl_relative_errors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
+def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_ggl.pdf"):
     num_cols = NUM_LENS_BINS
     num_rows = NUM_SOURCE_BINS
 
@@ -260,12 +255,13 @@ def plot_ggl_relative_errors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
             ax = axes[row, col]
             start = (row*NUM_SOURCE_BINS + col) * BLOCK_SIZE
             end = start + BLOCK_SIZE
-            rel_error_cocoa_cosmosis     = (ggl_cocoa[start:end] - ggl_cosmosis[start:end])/ggl_cosmosis[start:end]
-            rel_error_cocoa_cosmolike    = (ggl_cocoa[start:end] - ggl_cosmolike[start:end])/ggl_cosmolike[start:end]
-            rel_error_cosmolike_cosmosis = (ggl_cosmolike[start:end] - ggl_cosmosis[start:end])/ggl_cosmosis[start:end]
-            ax.semilogx(theta, rel_error_cocoa_cosmosis, color='C3', marker='o', linestyle='-')
-            ax.semilogx(theta, rel_error_cocoa_cosmolike, color='C4', marker='P', linestyle='-')
-            ax.semilogx(theta, rel_error_cosmolike_cosmosis, color='C5', marker='^', linestyle='-')
+            comparison_pairs = combinations(range(len(ggl_dvs)), 2)
+            for (a, b), color in zip(comparison_pairs, colors_error_plots):
+                rel_error = (ggl_dvs[a][start:end] - ggl_dvs[b][start:end])/ggl_dvs[b][start:end]
+                ax.semilogx(theta, rel_error, color=color, marker='o')
+            
+            ax.axhline(color="black", ls="--")
+            
             label = r'$\gamma_t$'
 
             if row == num_rows - 1:
@@ -274,16 +270,17 @@ def plot_ggl_relative_errors(theta, ggl_cosmosis, ggl_cocoa, ggl_cosmolike):
                 ax.set_ylabel('$\\frac{\\gamma_t^A - \\gamma_t^B}{\\gamma_t^B}$', fontsize=20)
 
             ax.set_title(f'{label} bins {row+1},{col+1}', fontsize=12)
-            # ax.set_ylim([-0.1, 0.1])
+            ax.set_ylim([-0.1, 0.1])
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 
-    fig.legend(handles=handles_error_plots, bbox_to_anchor=(1.0, 1.1), fontsize=20, ncol=3)
-    fig.suptitle('DES-Y6 Simulated Data Vectors: Relative Errors in GGL between cocoa and Cosmosis', fontsize=20)
-    plt.savefig("errors_ggl.pdf", bbox_inches="tight")
+    handles = [Line2D([], [], label=f"A: {labels[a]}, B: {labels[b]}", color=color, marker="o") for (a, b), color in zip(combinations(range(len(ggl_dvs)), 2), colors_error_plots)]
+    fig.legend(handles=handles, bbox_to_anchor=(1, 0), fontsize=20, ncol=1)
+    fig.suptitle('DES-Y6 Simulated Data Vectors: Relative Errors in GGL', fontsize=20)
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_gc_datavectors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
+def plot_gc_datavectors(theta, gc_dvs, labels, save_fig_filename="comparison_gc.pdf"):
     num_cols = NUM_LENS_BINS
 
     fig, axes = plt.subplots(1, num_cols, figsize=(13, 4), sharex=True, sharey=True, constrained_layout=True)
@@ -292,9 +289,8 @@ def plot_gc_datavectors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
         ax = axes[col]
         start = col * BLOCK_SIZE
         end    = start + BLOCK_SIZE
-        ax.loglog(theta, gc_cocoa[start:end], color='C0', marker='o', linestyle='-')
-        ax.loglog(theta, gc_cosmosis[start:end], color='C1', marker='P', linestyle='-')
-        ax.loglog(theta, gc_cosmolike[start:end], color='C2', marker='^', linestyle='-')
+        for gc_dv, color in zip(gc_dvs, colors_comparison_plots):
+            ax.loglog(theta, gc_dv[start:end], color=color, marker='o')
 
         ax.set_xlabel('$\\theta$ (arcmin)', fontsize=20)
         if col == 0:
@@ -304,13 +300,16 @@ def plot_gc_datavectors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
         ax.set_xlim([2, 255])
         ax.grid(True, linewidth=0.5, alpha=0.5)
 
-    fig.legend(handles=handles_comparison_plots, bbox_to_anchor=(0.85, 1.2), fontsize=20, ncol=3)
+    handles = [
+        Line2D([], [], color=color, marker="o", label=label) for color, label in zip(colors_comparison_plots, labels)
+    ]
+    fig.legend(handles=handles, bbox_to_anchor=(0.9, 1.1), fontsize=20, ncol=3)
 
     fig.suptitle('DES-Y6 Simulated Galaxy Clustering', fontsize=20)
-    plt.savefig("comparison_gc.pdf", bbox_inches="tight")
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_gc_relative_errors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
+def plot_gc_relative_errors(theta, gc_dvs, labels, save_fig_filename="errors_gc.pdf"):
     num_cols = NUM_LENS_BINS
 
     fig, axes = plt.subplots(1, num_cols, figsize=(13, 4), sharex=True, sharey=True, constrained_layout=True)
@@ -319,12 +318,11 @@ def plot_gc_relative_errors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
         ax = axes[col]
         start = col * BLOCK_SIZE
         end    = start + BLOCK_SIZE
-        rel_error_cocoa_cosmosis     = (gc_cocoa[start:end] - gc_cosmosis[start:end])/gc_cosmosis[start:end]
-        rel_error_cocoa_cosmolike    = (gc_cocoa[start:end] - gc_cosmolike[start:end])/gc_cosmolike[start:end]
-        rel_error_cosmolike_cosmosis = (gc_cosmolike[start:end] - gc_cosmosis[start:end])/gc_cosmosis[start:end]
-        ax.semilogx(theta, rel_error_cocoa_cosmosis, color='C3', marker='o', linestyle='-')
-        ax.semilogx(theta, rel_error_cocoa_cosmolike, color='C4', marker='P', linestyle='-')
-        ax.semilogx(theta, rel_error_cosmolike_cosmosis, color='C5', marker='^', linestyle='-')
+        ax.axhline(color="black", ls="--")
+        comparison_pairs = combinations(range(len(gc_dvs)), 2)
+        for (a, b), color in zip(comparison_pairs, colors_error_plots):
+            rel_error = (gc_dvs[a][start:end] - gc_dvs[b][start:end])/gc_dvs[b][start:end]
+            ax.semilogx(theta, rel_error, color=color, marker='o')
 
         ax.set_xlabel('$\\theta$ (arcmin)', fontsize=20)
         if col == 0:
@@ -335,7 +333,8 @@ def plot_gc_relative_errors(theta, gc_cosmosis, gc_cocoa, gc_cosmolike):
         ax.set_ylim([-0.07, 0.07])
         ax.grid(True, linewidth=0.5, alpha=0.5)
     
-    fig.legend(handles=handles_error_plots, fontsize=20, bbox_to_anchor=(1, 1.2), ncol=3)
-    fig.suptitle('DES-Y6 Simulated Data Vectors: Clustering relative errors between cocoa and Cosmosis', fontsize=20)
-    plt.savefig("errors_gc.pdf", bbox_inches="tight")
+    handles = [Line2D([], [], label=f"A: {labels[a]}, B: {labels[b]}", color=color, marker="o") for (a, b), color in zip(combinations(range(len(gc_dvs)), 2), colors_error_plots)]
+    fig.legend(handles=handles, bbox_to_anchor=(1, 0), fontsize=20, ncol=1)
+    fig.suptitle('DES-Y6 Simulated Data Vectors: Relative errors in Clustering', fontsize=20)
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()

@@ -186,7 +186,7 @@ theory:
     extra_args:
       halofit_version: mead2020_feedback
       HMCode_logT_AGN: 7.7
-      AccuracyBoost: 1.1
+      AccuracyBoost: 1.0
       dark_energy_model: ppf
       accurate_massive_neutrino_transfers: false
       k_per_logint: 10
@@ -221,7 +221,7 @@ sampler:
       DES_M2: 0.0064552
       DES_M3: 0.01593935
       DES_M4: 0.00169811
-      DES_A1_1: 1.0
+      DES_A1_1: 0.0
       DES_A1_2: -1.0
       # DES_A2_1: 0.0
       # DES_A2_2: 0.0
