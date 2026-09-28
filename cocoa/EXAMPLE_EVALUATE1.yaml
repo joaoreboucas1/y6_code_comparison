@@ -9,7 +9,7 @@ likelihood:
     print_datavector: True
     print_datavector_file: "./projects/y6_code_comparison/cocoa/LCDM_no_prefactor_no_BMAG_no_BMAG_ell_prefactor.modelvector"
     accuracyboost: 1.0
-    integration_accuracy: 0
+    integration_accuracy: 3
     lmax: 100000 # lmax computed for real space correlation function
     kmax_boltzmann: 5.0
     # 1 EE2, 2 Halofit

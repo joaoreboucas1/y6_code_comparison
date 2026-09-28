@@ -7,6 +7,7 @@
 - Cosmolike and Cocoa agree on cosmic shear, and dchi2 between cosmosis and cosmolike is ~0.36. now we want to invetigate magnification bias, so we are turning it off from both analysis. This means alpha = 1 and BMAG = 0.
 - Removing BMAG, dchi2 in clustering between Cocoa and Cosmolike went down from 1.1 to 0.23!
 - Removing a bmag_ell_prefactor in Cocoa
-- Changing line 2718 in cosmo2D.c in Cocoa to integrate until a = 1 instead of amax
+- Changing line 2718 in cosmo2D.c in Cocoa to integrate until a = 1 instead of amax: made no difference
 - in Cosmolike, the bin-average P_l starts at l=2, and in Cocoa it starts at l=1. It does not make any difference though
 - There is another ell_prefactor of l*(l + 1.)/(l+0.5)^2 that I'm disabling in Cocoa, I had changed that in TATT_core but not in NLA_core
+- Finally, we figured out the last step in the comparison: integration accuracy. Increasing Cocoa's integration accuracy from 0 to 3 solved the issue and made the dchi2 between the two codes equal to 0.12. Summary of the differences: ell prefactors, shear m^i bug in Cosmolike, integration accuracy

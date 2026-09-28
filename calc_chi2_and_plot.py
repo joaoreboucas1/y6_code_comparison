@@ -9,7 +9,7 @@ plotfile = "plots/test.png"
 # New files:
 datavfile2 = "cocoa/LCDM_no_prefactor_no_BMAG_no_BMAG_ell_prefactor.modelvector"
 datavfile1 = "cosmolike_lighthouse/LCDM_lighthouse_no_BMAG.modelvector"
-datavfile2 = "comparing/COSMOSIS.modelvector"
+# datavfile2 = "comparing/COSMOSIS.modelvector"
 
 d1 = np.genfromtxt(datavfile1)[:,1]
 d2 = np.genfromtxt(datavfile2)[:,1]
