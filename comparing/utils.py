@@ -95,6 +95,9 @@ def load_cosmosis_data():
     theta_cosmosis, shear_cosmosis = load_cosmosis_shear_data()
     _, ggl_cosmosis = load_cosmosis_ggl_data()
     _, gc_cosmosis = load_cosmosis_gc_data()
+    dv_cosmosis = np.hstack((shear_cosmosis, ggl_cosmosis, gc_cosmosis))
+    data = np.column_stack((np.arange(len(dv_cosmosis)), dv_cosmosis))
+    np.savetxt("COSMOSIS.modelvector", data, fmt="%d %e")
     return theta_cosmosis, shear_cosmosis, ggl_cosmosis, gc_cosmosis
 
 def plot_shear_datavectors(theta, shear_dvs, labels):
@@ -270,7 +273,7 @@ def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_g
                 ax.set_ylabel('$\\frac{\\gamma_t^A - \\gamma_t^B}{\\gamma_t^B}$', fontsize=20)
 
             ax.set_title(f'{label} bins {row+1},{col+1}', fontsize=12)
-            ax.set_ylim([-0.1, 0.1])
+            ax.set_ylim([-0.06, 0.06])
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 

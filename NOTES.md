@@ -8,3 +8,5 @@
 - Removing BMAG, dchi2 in clustering between Cocoa and Cosmolike went down from 1.1 to 0.23!
 - Removing a bmag_ell_prefactor in Cocoa
 - Changing line 2718 in cosmo2D.c in Cocoa to integrate until a = 1 instead of amax
+- in Cosmolike, the bin-average P_l starts at l=2, and in Cocoa it starts at l=1. It does not make any difference though
+- There is another ell_prefactor of l*(l + 1.)/(l+0.5)^2 that I'm disabling in Cocoa, I had changed that in TATT_core but not in NLA_core
