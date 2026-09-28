@@ -153,26 +153,26 @@ setting up template matrix for pm-marginalization with shape: (5, 510)
 **** WARNING: Parameter 'make_covariance' in the [2pt_like] section never used!
 
 Module timing:
-w0wa_check 0.017152
-consistency 0.015105
-bbn_consistency 0.016174
-camb 0.015264
-fast_pt 0.013390
-fits_nz 0.023740
-correlated_priors 0.015073
-photoz_uz_lens 0.016857
-photoz_uz_source 0.014652
-IA 0.013796
-pk_to_cl_gg 0.013732
-pk_to_cl 0.014082
-add_magnification 0.013477
-add_intrinsic 0.013304
-2pt_shear 0.247522
-2pt_gal 0.097611
-2pt_gal_shear 0.099627
-shear_m_bias 0.013118
-add_point_mass 0.052658
-2pt_like 0.121647
+w0wa_check 0.022837
+consistency 0.020958
+bbn_consistency 0.025116
+camb 0.021486
+fast_pt 0.020094
+fits_nz 0.037568
+correlated_priors 0.023793
+photoz_uz_lens 0.026431
+photoz_uz_source 0.023435
+IA 0.019088
+pk_to_cl_gg 0.022116
+pk_to_cl 0.020109
+add_magnification 0.019120
+add_intrinsic 0.019306
+2pt_shear 0.437706
+2pt_gal 0.137727
+2pt_gal_shear 0.136033
+shear_m_bias 0.018974
+add_point_mass 0.069291
+2pt_like 0.268036
 
 Parameter Priors
 ----------------
@@ -244,225 +244,26 @@ lens_photoz_u--u_5_2                             ~ N(0.0, 1.0 ** 2)   [-3.0 < x 
 * Running in serial mode.
 ****************************************************
 w0wa_check took: 0.000 seconds
-consistency took: 0.002 seconds
+consistency took: 0.003 seconds
 bbn_consistency took: 0.000 seconds
---------------
-CAMB Results:
-class: <CAMBdata>
- Params: <CAMBparams>
-   WantCls = False
-   WantTransfer = True
-   WantScalars = True
-   WantTensors = True
-   WantVectors = False
-   WantDerivedParameters = True
-   Want_cl_2D_array = False
-   Want_CMB = False
-   Want_CMB_lensing = True
-   DoLensing = True
-   NonLinear = NonLinear_both
-   Transfer: <TransferParams>
-     high_precision = True
-     accurate_massive_neutrinos = False
-     kmax = 10.0
-     k_per_logint = 0
-     PK_num_redshifts = 150
-     PK_redshifts = [4.0, 3.9731543624161074, 3.946308724832215, 3.9194630872483223, 3.8926174496644292, 3.8657718120805367, 3.838926174496644, ...]
-   want_zstar = True
-   want_zdrag = True
-   min_l = 2
-   max_l = 2700
-   max_l_tensor = 600
-   lens_output_margin = 200
-   max_eta_k = 72000.0
-   max_eta_k_tensor = 1200.0
-   ombh2 = 0.021996100000000005
-   omch2 = 0.12055813342937491
-   omk = 0.0
-   omnuh2 = 0.0006451616715432691
-   H0 = 67.0
-   TCMB = 2.7255
-   YHe = 0.2479957745473885
-   num_nu_massless = 0.0
-   num_nu_massive = 3
-   nu_mass_eigenstates = 1
-   share_delta_neff = False
-   nu_mass_degeneracies = [3.044]
-   nu_mass_fractions = [1.0]
-   nu_mass_numbers = [3]
-   InitPower: <InitialPowerLaw>
-     tensor_parameterization = tensor_param_rpivot
-     ns = 0.96
-     nrun = 0.0
-     nrunrun = 0.0
-     nt = 0.0
-     ntrun = 0.0
-     r = 0.0
-     pivot_scalar = 0.05
-     pivot_tensor = 0.05
-     As = 2.1e-09
-     At = 1.0
-   Recomb: <Recfast>
-     min_a_evolve_Tm = 0.0011098779505118728
-     RECFAST_fudge = 1.125
-     RECFAST_fudge_He = 0.8472367977
-     RECFAST_Hswitch = True
-     RECFAST_He_rate_correction = True
-     AGauss1 = -0.1395272483
-     AGauss2 = 0.0729891952
-     zGauss1 = 7.2813061282
-     zGauss2 = 6.7667038679
-     wGauss1 = 0.163896641
-     wGauss2 = 0.2785834127
-     Nz = 2046
-     use_rosenbrock = True
-     rosenbrock_handoff_xH = 0.976
-     rosenbrock_tol = 0.0003
-   Reion: <TanhReionization>
-     Reionization = True
-     include_heating = False
-     reion_temperature = 10000.0
-     use_optical_depth = True
-     redshift = 10.0
-     optical_depth = 0.054
-     fraction = -1.0
-     include_helium_fullreion = True
-     helium_redshift = 3.5
-     helium_delta_redshift = 0.4
-     helium_redshiftstart = 5.5
-     tau_solve_accuracy_boost = 1.0
-     timestep_boost = 1.0
-     max_redshift = 50.0
-     delta_redshift = 0.5
-   DarkEnergy: <DarkEnergyFluid>
-     w = -1.0
-     wa = 0.0
-     cs2 = 1.0
-     use_tabulated_w = False
-   NonLinearModel: <Halofit>
-     Min_kh_nonlinear = 0.005
-     halofit_version = mead2020_feedback
-     HMCode_A_baryon = 3.13
-     HMCode_eta_baryon = 0.603
-     HMCode_logT_AGN = 7.7
-     HMCode_wiggle_max_fnu = 0.01
-   Accuracy: <AccuracyParams>
-     AccuracyBoost = 1.0
-     lSampleBoost = 1.0
-     lAccuracyBoost = 1.0
-     AccuratePolarization = True
-     AccurateBB = False
-     AccurateReionization = True
-     TimeStepBoost = 1.0
-     BackgroundTimeStepBoost = 1.0
-     TimeSwitchBoost = 1.0
-     IntTolBoost = 1.0
-     SourcekAccuracyBoost = 1.0
-     IntkAccuracyBoost = 1.0
-     TransferkBoost = 1.0
-     NonFlatIntAccuracyBoost = 1.0
-     BessIntBoost = 1.0
-     LensingBoost = 1.0
-     NonlinSourceBoost = 1.0
-     BesselBoost = 1.0
-     LimberBoost = 1.0
-     SourceLimberBoost = 1.0
-     KmaxBoost = 1.0
-     neutrino_q_boost = 1.0
-   SourceTerms: <SourceTermParams>
-     limber_windows = False
-     limber_phi_lmin = 100
-     counts_density = True
-     counts_redshift = True
-     counts_lensing = False
-     counts_velocity = True
-     counts_radial = False
-     counts_timedelay = True
-     counts_ISW = True
-     counts_potential = True
-     counts_evolve = False
-     line_phot_dipole = False
-     line_phot_quadrupole = False
-     line_basic = True
-     line_distortions = True
-     line_extra = False
-     line_reionization = False
-     use_21cm_mK = True
-   z_outputs = []
-   scalar_initial_condition = initial_adiabatic
-   InitialConditionVector = []
-   OutputNormalization = 1
-   Alens = 1.0
-   MassiveNuMethod = Nu_best
-   DoLateRadTruncation = True
-   Evolve_baryon_cs = False
-   Evolve_delta_xe = False
-   Evolve_delta_Ts = False
-   Do21cm = False
-   transfer_21cm_cl = False
-   Log_lvalues = False
-   use_cl_spline_template = True
-   min_l_logl_sampling = 5000
-   SourceWindows = []
-   CustomSources: <CustomSources>
-     num_custom_sources = 0
-     c_source_func = None
-     custom_source_ell_scales = []
- ThermoDerivedParams = [13.825174924242571, 1090.533224556284, 144.57978303905065, 1.0414000919476778, 13.883212048565353, 1059.1831883694301, 147.369562306287, 0.14018950060577495, 0.1614151994256563, 3407.285119205587, 0.01039815337819869, 0.8115693611536239, 0.448781102489622]
- flat = True
- closed = False
- grhocrit = 1.4984058304874078e-07
- grhog = 8.254668411441384e-12
- grhor = 1.8746956010971585e-12
- grhob = 7.342188569388299e-09
- grhoc = 4.024170417537407e-08
- grhov = 1.020330838845651e-07
- grhornomass = 0.0
- grhok = 0.0
- taurst = 205.39512983224293
- dtaurec = 5.134878245806073
- taurend = 599.6796180762553
- tau_maxvis = 280.599673248186
- adotrad = 2.1572545685957056e-06
- omega_de = 0.680944252942311
- curv = 0.0
- curvature_radius = 1.0
- Ksign = 0.0
- tau0 = 14163.488478729683
- DMt0 = 14163.488478729683
- scale = 0.9987808699505663
- curv_flat_DM_ratio = 1.0
- akthom = 3.810904818553021e-07
- fHe = 0.0830381257879472
- Nnow = 0.185650177014753
- z_eq = 3407.285119205587
- grhormass = [5.70657340973975e-12, 0.0, 0.0, 0.0, 0.0]
- nu_masses = [118.87055852964777, 0.0, 0.0, 0.0, 0.0]
- num_transfer_redshifts = 165
- transfer_redshifts = [10.0, 9.487243561609992, 8.983563653985659, 8.489126888499298, 8.00410940418327, 7.528697812093937, 7.063090276179169, ...]
- PK_redshifts_index = [15, 16, 17, 18, 19, 20, 21, ...]
- OnlyTransfers = False
- HasScalarTimeSources = False
- 
---------------
-camb took: 1.201 seconds
-fast_pt took: 0.414 seconds
+camb took: 1.375 seconds
+fast_pt took: 0.509 seconds
 fits_nz took: 0.000 seconds
 correlated_priors took: 0.000 seconds
-photoz_uz_lens took: 0.001 seconds
-photoz_uz_source took: 0.000 seconds
-IA took: 0.013 seconds
-pk_to_cl_gg took: 0.721 seconds
-pk_to_cl took: 1.885 seconds
+photoz_uz_lens took: 0.002 seconds
+photoz_uz_source took: 0.001 seconds
+IA took: 0.020 seconds
+pk_to_cl_gg took: 1.105 seconds
+pk_to_cl took: 2.391 seconds
 add_magnification took: 0.005 seconds
-add_intrinsic took: 0.002 seconds
-2pt_shear took: 0.076 seconds
-2pt_gal took: 0.022 seconds
-2pt_gal_shear took: 0.088 seconds
+add_intrinsic took: 0.003 seconds
+2pt_shear took: 0.079 seconds
+2pt_gal took: 0.024 seconds
+2pt_gal_shear took: 0.090 seconds
 shear_m_bias took: 0.002 seconds
-add_point_mass took: 0.014 seconds
-2pt_like took: 0.022 seconds
-Total pipeline time: 4.47 seconds
-Prior      =  -16.817925336348356
-Likelihood =  6041.642158917176
-Posterior  =  6024.824233580827
+add_point_mass took: 0.015 seconds
+2pt_like took: 0.023 seconds
+Total pipeline time: 5.65 seconds
+Prior      =  -440.0846888004686
+Likelihood =  6063.653126108026
+Posterior  =  5623.568437307557
