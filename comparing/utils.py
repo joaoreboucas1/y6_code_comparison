@@ -1,3 +1,4 @@
+import os
 from itertools import combinations
 import numpy as np
 import matplotlib as mpl
@@ -15,6 +16,7 @@ MIN_ANGLE = 2.5
 MAX_ANGLE = 995.2679263837432
 
 COSMOSIS_DATA_PATH = "../cosmosis/lcdm_datavector_run/"
+os.makedirs("plots", exist_ok=True)
 
 colors_comparison_plots = mpl.colors.TABLEAU_COLORS
 colors_error_plots = mpl.colors.XKCD_COLORS
@@ -55,7 +57,6 @@ def load_cosmosis_shear_data():
     # Load Cosmosis data
     shear_cosmosis = []
     theta_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/shear_xi_plus/theta.txt")*RAD_TO_ARCMIN
-    theta_edges_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/shear_xi_plus/theta_edges.txt")*RAD_TO_ARCMIN
     for corr_func in ["plus", "minus"]:
         for i in range(1, NUM_SOURCE_BINS + 1):
             for j in range(i, NUM_SOURCE_BINS + 1):
@@ -72,7 +73,6 @@ def load_cosmosis_ggl_data():
     # Load Cosmosis data
     ggl_cosmosis = []
     theta_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_shear_xi/theta.txt")*RAD_TO_ARCMIN
-    theta_edges_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_shear_xi/theta_edges.txt")*RAD_TO_ARCMIN
     for j in range(1, NUM_LENS_BINS + 1):
         for i in range(1, NUM_SOURCE_BINS + 1):
             gamma_t_ij = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_shear_xi/bin_{j}_{i}.txt")
@@ -84,7 +84,6 @@ def load_cosmosis_gc_data():
     # Load Cosmosis data
     gc_cosmosis = []
     theta_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_xi/theta.txt")*RAD_TO_ARCMIN
-    theta_edges_cosmosis = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_xi/theta_edges.txt")*RAD_TO_ARCMIN
     for i in range(1, NUM_LENS_BINS + 1):
         gc_i = np.loadtxt(f"{COSMOSIS_DATA_PATH}/galaxy_xi/bin_{i}_{i}.txt")
         gc_cosmosis.append(gc_i)
@@ -100,7 +99,7 @@ def load_cosmosis_data():
     np.savetxt("COSMOSIS.modelvector", data, fmt="%d %e")
     return theta_cosmosis, shear_cosmosis, ggl_cosmosis, gc_cosmosis
 
-def plot_shear_datavectors(theta, shear_dvs, labels):
+def plot_shear_datavectors(theta, shear_dvs, labels, save_fig_filename="plots/comparison_shear.pdf"):
     num_cols = NUM_SOURCE_BINS+1
 
     xi_pluses = [shear_dv[:NUM_SHEAR_BLOCKS*BLOCK_SIZE] for shear_dv in shear_dvs]
@@ -155,10 +154,10 @@ def plot_shear_datavectors(theta, shear_dvs, labels):
     fig.legend(handles=handles, bbox_to_anchor=(0.9, 1.07), fontsize=20, ncol=3)
 
     fig.suptitle('DES-Y6 Simulated Shear', fontsize=24)
-    plt.savefig("comparison_shear.pdf", bbox_inches="tight")
+    plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_shear_relative_errors(theta, shear_dvs, labels, save_fig_filename="errors_shear.pdf"):
+def plot_shear_relative_errors(theta, shear_dvs, labels, save_fig_filename="plots/errors_shear.pdf"):
     num_cols = NUM_SOURCE_BINS+1
     NUM_SHEAR_BLOCKS = NUM_SOURCE_BINS * (NUM_SOURCE_BINS + 1) // 2
 
@@ -213,7 +212,7 @@ def plot_shear_relative_errors(theta, shear_dvs, labels, save_fig_filename="erro
     plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="comparison_ggl.pdf"):
+def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="plots/comparison_ggl.pdf"):
     num_cols = NUM_LENS_BINS
     num_rows = NUM_SOURCE_BINS
 
@@ -222,7 +221,7 @@ def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="comparison_g
     for row in range(num_rows):
         for col in range(num_cols):
             ax = axes[row, col]
-            start = (row*NUM_SOURCE_BINS + col) * BLOCK_SIZE
+            start = (col*NUM_SOURCE_BINS + row) * BLOCK_SIZE
             end = start + BLOCK_SIZE
             for ggl_dv, color in zip(ggl_dvs, colors_comparison_plots):
                 ax.loglog(theta, ggl_dv[start:end], color=color, marker='o')
@@ -234,7 +233,7 @@ def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="comparison_g
             if col == 0:
                 ax.set_ylabel('$\\gamma_t$', fontsize=20)
 
-            ax.set_title(f'{label} bins {row+1},{col+1}', fontsize=12)
+            ax.set_title(f'{label} bins lens {col+1} source {row+1}', fontsize=12)
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
 
@@ -247,7 +246,7 @@ def plot_ggl_datavectors(theta, ggl_dvs, labels, save_fig_filename="comparison_g
     plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_ggl.pdf"):
+def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="plots/errors_ggl.pdf"):
     num_cols = NUM_LENS_BINS
     num_rows = NUM_SOURCE_BINS
 
@@ -256,7 +255,7 @@ def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_g
     for row in range(num_rows):
         for col in range(num_cols):
             ax = axes[row, col]
-            start = (row*NUM_SOURCE_BINS + col) * BLOCK_SIZE
+            start = (col*NUM_SOURCE_BINS + row) * BLOCK_SIZE
             end = start + BLOCK_SIZE
             comparison_pairs = combinations(range(len(ggl_dvs)), 2)
             for (a, b), color in zip(comparison_pairs, colors_error_plots):
@@ -272,7 +271,7 @@ def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_g
             if col == 0:
                 ax.set_ylabel('$\\frac{\\gamma_t^A - \\gamma_t^B}{\\gamma_t^B}$', fontsize=20)
 
-            ax.set_title(f'{label} bins {row+1},{col+1}', fontsize=12)
+            ax.set_title(f'{label} bins lens {col+1} source {row+1}', fontsize=12)
             ax.set_ylim([-0.06, 0.06])
             ax.set_xlim([2, 255])
             ax.grid(True, linewidth=0.5, alpha=0.5)
@@ -283,7 +282,7 @@ def plot_ggl_relative_errors(theta, ggl_dvs, labels, save_fig_filename="errors_g
     plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_gc_datavectors(theta, gc_dvs, labels, save_fig_filename="comparison_gc.pdf"):
+def plot_gc_datavectors(theta, gc_dvs, labels, save_fig_filename="plots/comparison_gc.pdf"):
     num_cols = NUM_LENS_BINS
 
     fig, axes = plt.subplots(1, num_cols, figsize=(13, 4), sharex=True, sharey=True, constrained_layout=True)
@@ -312,7 +311,7 @@ def plot_gc_datavectors(theta, gc_dvs, labels, save_fig_filename="comparison_gc.
     plt.savefig(save_fig_filename, bbox_inches="tight")
     plt.show()
 
-def plot_gc_relative_errors(theta, gc_dvs, labels, save_fig_filename="errors_gc.pdf"):
+def plot_gc_relative_errors(theta, gc_dvs, labels, save_fig_filename="plots/errors_gc.pdf"):
     num_cols = NUM_LENS_BINS
 
     fig, axes = plt.subplots(1, num_cols, figsize=(13, 4), sharex=True, sharey=True, constrained_layout=True)

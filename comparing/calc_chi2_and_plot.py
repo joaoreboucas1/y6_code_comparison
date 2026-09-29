@@ -10,8 +10,8 @@ os.makedirs(plotdir, exist_ok=True)
 
 # New files:
 datavfiles = {
-	"cosmolike": "../cosmolike_lighthouse/LCDM_lighthouse_no_BMAG.modelvector",
-	"cocoa": "../cocoa/LCDM_no_prefactor_no_BMAG_no_BMAG_ell_prefactor.modelvector",
+	"cosmolike": "../cosmolike_lighthouse/LCDM_lighthouse.modelvector",
+	"cocoa": "../cocoa/LCDM.modelvector",
 	"cosmosis": "COSMOSIS.modelvector",
 }
 dvs = {name: np.genfromtxt(f)[:,1] for name, f in datavfiles.items()}
@@ -59,8 +59,7 @@ def compare(name1, d1, name2, d2):
 		print(msg)
 		print(msg, file=logfile)
 
-	log(f"===== {name1} (d1) vs {name2} (d2) =====")
-	log(d2/d1*m)
+	log(f"===== {name1} vs {name2} =====")
 	log("chi2 calculated using Y6 extension scale cuts")
 	inv = LA.inv(cov)
 	chi = ((d1 - d2)*m).T@inv@((d1-d2)*m)
@@ -109,18 +108,18 @@ def compare(name1, d1, name2, d2):
 	plt.xlim(0,nxip-1)
 	#plt.title(r'$\xi_+$')
 	plt.ylabel(r'$\xi_+$', fontsize = fs)
-	plt.errorbar(ind,d1,s,marker='o', color='k',linestyle = '',markersize = 0.5,alpha = 0.25)
-	plt.plot(ind,d1,marker='o', color='r',linestyle = '',markersize = 1.5)
+	plt.errorbar(ind,d1,s,marker='o', color='gray',linestyle = '',markersize = 0.5,alpha = 0.3)
+	plt.plot(ind,d1,marker='o', color='r',linestyle = '',markersize = 1.5, label='left: data vector 1')
 
 
 	plt.subplot(4,2,2)
 	plt.ylim(-0.1,0.1)
 	plt.plot([0,1000],[0,0],linestyle ='--',color='k')
 	plt.xlim(0,nxip-1)
-	plt.ylabel(r'(d2-d1)/d2', fontsize = fs)
-	plt.errorbar(ind,d1*0,s/np.abs(d1),marker='o', color='k',linestyle = '',markersize = 0.0,alpha = 0.1)
-	plt.plot(ind[ind0],(d2[ind0]-d1[ind0])/d2[ind0],marker='x', color='k',linestyle = '',markersize = 1.0)
-	plt.plot(ind[ind1],(d2[ind1]-d1[ind1])/d2[ind1],marker='o', color='r',linestyle = '',markersize = 1.0)
+	plt.ylabel(r'$\frac{\xi_{+,2}-\xi_{+,1}}{\xi_{+,2}}$', fontsize = fs)
+	plt.fill_between(ind,-s/np.abs(d1),s/np.abs(d1),step='mid', color='gray',alpha = 0.3,linewidth = 0, label=r'$1\sigma$ error (Y6 covariance)')
+	plt.plot(ind[ind0],(d2[ind0]-d1[ind0])/d2[ind0],marker='x', color='k',linestyle = '',markersize = 1.0, label='right: removed by scale cuts')
+	plt.plot(ind[ind1],(d2[ind1]-d1[ind1])/d2[ind1],marker='o', color='r',linestyle = '',markersize = 1.0, label='right: kept by scale cuts')
 
 	plt.subplot(4,2,3)
 	plt.yscale('log')
@@ -128,15 +127,15 @@ def compare(name1, d1, name2, d2):
 	plt.xlim(nxip,nxip+nxim-1)
 	#plt.title(r'$\xi_-$')
 	plt.ylabel(r'$\xi_-$', fontsize = fs)
-	plt.errorbar(ind,d1,s,marker='o', color='k',linestyle = '',markersize = 0.5,alpha = 0.25)
+	plt.errorbar(ind,d1,s,marker='o', color='gray',linestyle = '',markersize = 0.5,alpha = 0.3)
 	plt.plot(ind,d1,marker='o', color='r',linestyle = '',markersize = 1.5)
 
 	plt.subplot(4,2,4)
 	plt.ylim(-0.1,0.1)
 	plt.plot([0,1000],[0,0],linestyle ='--',color='k')
 	plt.xlim(nxip,nxip+nxim-1)
-	plt.ylabel(r'(d2-d1)/d2', fontsize = fs)
-	plt.errorbar(ind,d1*0,s/np.abs(d1),marker='o', color='k',linestyle = '',markersize = 0.0,alpha = 0.1)
+	plt.ylabel(r'$\frac{\xi_{-,2}-\xi_{-,1}}{\xi_{-,2}}$', fontsize = fs)
+	plt.fill_between(ind,-s/np.abs(d1),s/np.abs(d1),step='mid', color='gray',alpha = 0.3,linewidth = 0)
 	plt.plot(ind[ind0],(d2[ind0]-d1[ind0])/d2[ind0],marker='x', color='k',linestyle = '',markersize = 1.0)
 	plt.plot(ind[ind1],(d2[ind1]-d1[ind1])/d2[ind1],marker='o', color='r',linestyle = '',markersize = 1.0)
 
@@ -147,7 +146,7 @@ def compare(name1, d1, name2, d2):
 	plt.xlim(nxip+nxim,nxip+nxim+nggl-1)
 	#plt.title(r'$\gamma_t$')
 	plt.ylabel(r'$\gamma_t$', fontsize = fs)
-	plt.errorbar(ind,d1,s,marker='o', color='k',linestyle = '',markersize = 0.5,alpha = 0.2)
+	plt.errorbar(ind,d1,s,marker='o', color='gray',linestyle = '',markersize = 0.5,alpha = 0.3)
 	plt.plot(ind,d1,marker='o', color='r',linestyle = '',markersize = 1.5)
 	#plt.plot(ind,d3,linestyle = '-')
 
@@ -156,8 +155,8 @@ def compare(name1, d1, name2, d2):
 	plt.plot([0,1000],[0,0],linestyle ='--',color='k')
 	plt.xlim(nxip+nxim,nxip+nxim+nggl-1)
 	#plt.title(r'$\gamma_t$')
-	plt.ylabel(r'(d2-d1)/d2', fontsize = fs)
-	plt.errorbar(ind,d1*0,s/np.abs(d1),marker='o', color='k',linestyle = '',markersize = 0.0,alpha = 0.1)
+	plt.ylabel(r'$\frac{\gamma_{t,2}-\gamma_{t,1}}{\gamma_{t,2}}$', fontsize = fs)
+	plt.fill_between(ind,-s/np.abs(d1),s/np.abs(d1),step='mid', color='gray',alpha = 0.3,linewidth = 0)
 	plt.plot(ind[ind0],(d2[ind0]-d1[ind0])/d2[ind0],marker='x', color='k',linestyle = '',markersize = 1.0)
 	plt.plot(ind[ind1],(d2[ind1]-d1[ind1])/d2[ind1],marker='o', color='r',linestyle = '',markersize = 1.0)
 
@@ -169,7 +168,7 @@ def compare(name1, d1, name2, d2):
 	#plt.title(r'$w$')
 	plt.ylabel(r'$w$', fontsize = fs)
 	plt.xlabel(r'bin number', fontsize = fs)
-	plt.errorbar(ind,d1,s,marker='o', color='k',linestyle = '',markersize = 0.5,alpha = 0.4)
+	plt.errorbar(ind,d1,s,marker='o', color='gray',linestyle = '',markersize = 0.5,alpha = 0.3)
 	plt.plot(ind,d1,marker='o', color='r',linestyle = '',markersize = 1.5)
 	#plt.plot(ind,d3,linestyle = '-')
 
@@ -180,12 +179,14 @@ def compare(name1, d1, name2, d2):
 	plt.xlim(nxip+nxim+nggl,ndata)
 	#plt.title(r'$w$')
 	plt.xlabel(r'bin number', fontsize = 18)
-	plt.ylabel(r'(d2-d1)/d2', fontsize = fs)
-	plt.errorbar(ind,d1*0,s/np.abs(d1),marker='o', color='k',linestyle = '',markersize = 0.0,alpha = 0.1)
+	plt.ylabel(r'$\frac{w_2-w_1}{w_2}$', fontsize = fs)
+	plt.fill_between(ind,-s/np.abs(d1),s/np.abs(d1),step='mid', color='gray',alpha = 0.3,linewidth = 0)
 	plt.plot(ind[ind0],(d2[ind0]-d1[ind0])/d2[ind0],marker='x', color='k',linestyle = '',markersize = 1.0)
 	plt.plot(ind[ind1],(d2[ind1]-d1[ind1])/d2[ind1],marker='o', color='r',linestyle = '',markersize = 1.0)
 
-	plt.tight_layout()
+	plt.suptitle(f"1: {name1.capitalize()}, 2: {name2.capitalize()}", fontsize = fs)
+	plt.figlegend(loc='upper center', bbox_to_anchor=(0.5, 0.95), ncol=2, fontsize=10, markerscale=4)
+	plt.tight_layout(rect=(0, 0, 1, 0.9))
 	plt.savefig(f"{plotdir}/{name1}_vs_{name2}.pdf",dpi=400)
 	plt.close()
 

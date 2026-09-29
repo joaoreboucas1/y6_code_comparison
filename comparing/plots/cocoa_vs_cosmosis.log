@@ -1,8 +1,7 @@
-===== cocoa (d1) vs cosmosis (d2) =====
-[0.         1.00310777 1.00300145 ... 0.         0.         0.        ]
+===== cocoa vs cosmosis =====
 chi2 calculated using Y6 extension scale cuts
-3x2pt: Delta chi2 = 0.287163
-2x2pt: Delta chi2 = 0.24697439079508388
-ggl: Delta chi2 = 0.009149
-wtheta: Delta chi2 = 0.130308
-shear: Delta chi2 = 0.005485
+3x2pt: Delta chi2 = 0.277645
+2x2pt: Delta chi2 = 0.2411710094654539
+ggl: Delta chi2 = 0.009649
+wtheta: Delta chi2 = 0.129196
+shear: Delta chi2 = 0.004750

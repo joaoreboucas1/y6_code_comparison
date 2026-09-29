@@ -1,6 +1,11 @@
 # DES-Y6 Cosmolike-Cosmosis Code Comparison
 
-This repository contains files to compare the Cosmolike, Cosmosis and Cocoa codes regarding the analysis of DES-Y6 data.
+This repository contains files to compare the Cosmolike, Cosmosis and Cocoa codes regarding the analysis of DES-Y6 data. The main results of the comparison are in `comparing/plots/`.
+
+For the comparison, we used:
+- Modified version of Cocoa v4.11.2 where the variables `ell_bmag_prefactor` and `ell_prefactor2` are set to one;
+- Cosmolike_core branch cluster_chto commit 1b861b1fbe73a2d62dfce3acf29970cff20f5e30 with a slight modification: in `init.c` and `init_basic.c`, we set `nuisance.oneplusz0_ia=1.62;` and `nuisance.c1rhocrit_ia=0.013873073650776856;`;
+- Cosmosis: DES version of cosmosis-standard-library commit 54b15ffb9dd1a71cf6a936c752bb9c8df143beeb.
 
 ## Contents
 

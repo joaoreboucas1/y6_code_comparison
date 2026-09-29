@@ -1,3 +1,0 @@
-sigma8 = ...   # Cosmolike
-sigma8 = 0.815270432 # Cosmosis
-sigma8 = 0.815420127 # Cocoa

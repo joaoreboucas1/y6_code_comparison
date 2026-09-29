@@ -1,8 +1,7 @@
-===== cosmolike (d1) vs cocoa (d2) =====
-[0.         1.00323127 1.00300946 ... 0.         0.         0.        ]
+===== cosmolike vs cocoa =====
 chi2 calculated using Y6 extension scale cuts
-3x2pt: Delta chi2 = 0.126673
-2x2pt: Delta chi2 = 0.12089348130406698
-ggl: Delta chi2 = 0.047963
-wtheta: Delta chi2 = 0.072432
-shear: Delta chi2 = 0.006070
+3x2pt: Delta chi2 = 0.132938
+2x2pt: Delta chi2 = 0.12728288374654903
+ggl: Delta chi2 = 0.047942
+wtheta: Delta chi2 = 0.072386
+shear: Delta chi2 = 0.004884
